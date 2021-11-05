@@ -1,5 +1,5 @@
 <p align="left">
-<img src="./doc/img/pal-showcase.png" alt="flutter anchored onboarding screen" />
+<img src="./doc/img/pal-showcase.jpg" alt="flutter anchored onboarding screen" />
 </p>
 <br>
 
