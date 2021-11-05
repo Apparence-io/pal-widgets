@@ -1,3 +1,4 @@
+// coverage:ignore-file
 import 'package:flutter/material.dart';
 
 import 'anchored_circle_painter.dart';
@@ -7,17 +8,19 @@ class AnimatedAnchoredFullscreenCircle extends AnimatedWidget {
   final double padding;
   final Size? anchorSize;
   final Color? bgColor;
+  final Function? onTap;
 
   final Animation<double> _stroke1Animation, _stroke2Animation;
 
-  AnimatedAnchoredFullscreenCircle(
-      {Key? key,
-      required this.currentPos,
-      required this.padding,
-      required this.bgColor,
-      required this.anchorSize,
-      required Listenable listenable})
-      : _stroke1Animation = CurvedAnimation(
+  AnimatedAnchoredFullscreenCircle({
+    Key? key,
+    required this.currentPos,
+    required this.padding,
+    required this.bgColor,
+    required this.anchorSize,
+    required Listenable listenable,
+    this.onTap,
+  })  : _stroke1Animation = CurvedAnimation(
           parent: listenable as Animation<double>,
           curve: Curves.ease,
         ),
@@ -29,15 +32,24 @@ class AnimatedAnchoredFullscreenCircle extends AnimatedWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
+      child: SizedBox(
         child: CustomPaint(
-            painter: AnchoredFullscreenPainter(
-      currentPos: currentPos,
-      anchorSize: anchorSize,
-      padding: padding,
-      bgColor: bgColor,
-      circle1Width: _stroke1Animation.value * 88, // TODO params
-      circle2Width: _stroke2Animation.value * 140, // TODO params
-    )));
+          painter: AnchoredFullscreenPainter(
+            currentPos: currentPos,
+            anchorSize: anchorSize,
+            padding: padding,
+            bgColor: bgColor,
+            circle1Width: _stroke1Animation.value * 88, // TODO params
+            circle2Width: _stroke2Animation.value * 140, // TODO params
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
             OutlinedButton(
               onPressed: () {
                 HelperOrchestrator.of(context)
-                    .showAnchoredHelper('text1', helper);
+                    .showAnchoredHelper('btn', helper);
               },
               child: const Text('push me 2'),
             ),
@@ -126,8 +126,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         bgColor: Colors.blue,
-        negativText: const Text('cancel'),
-        positivText: const Text('Ok, understood'),
+        // negativText: const Text('cancel'),
+        // positivText: const Text('Ok, understood'),
         onError: () {
           // do as you want if error happens
         },
@@ -135,5 +135,6 @@ class _MyHomePageState extends State<MyHomePage> {
         negativeBtnStyle: helperOutlineBtnStyle,
         onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
         onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
+        onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
       );
 }

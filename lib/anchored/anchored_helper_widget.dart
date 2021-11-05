@@ -26,26 +26,27 @@ class AnchoredHelper extends StatefulWidget {
   final String anchorKeyId;
   final Text? title;
   final Text? description;
-  final Text negativText;
-  final Text positivText;
   final Color bgColor;
 
-  final Function onPositivTap, onNegativTap;
+  final Text? negativText, positivText;
+  final Function? onPositivTap, onNegativTap;
   final Function? onError;
   final ButtonStyle? negativeBtnStyle, positivBtnStyle;
   final Anchor? anchor;
+  final Function? onTapAnchor;
 
   const AnchoredHelper({
     required this.anchorKeyId,
-    required this.onPositivTap,
-    required this.onNegativTap,
-    required this.positivText,
-    required this.negativText,
+    this.onPositivTap,
+    this.onNegativTap,
+    this.positivText,
+    this.negativText,
     this.title,
     this.description,
     this.onError,
     this.negativeBtnStyle,
     this.positivBtnStyle,
+    this.onTapAnchor,
     Key? key,
     required this.bgColor,
     this.anchor,
@@ -129,6 +130,13 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                 bgColor: widget.bgColor,
                 padding: 8,
                 listenable: anchorAnimationController,
+                onTap: () async {
+                  if (widget.onTapAnchor != null) {
+                    HapticFeedback.selectionClick();
+                    await fadeAnimController.reverse();
+                    widget.onTapAnchor!();
+                  }
+                },
               ),
             ),
           ),
@@ -137,59 +145,62 @@ class _AnchoredHelperState extends State<AnchoredHelper>
             child: LayoutBuilder(
               builder: (context, constraints) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: constraints.maxHeight),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: _buildAnimItem(
-                            opacityAnim: titleOpacityAnimation,
-                            sizeAnim: titleSizeAnimation,
-                            child: widget.title ?? Container(),
-                          ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: _buildAnimItem(
+                          opacityAnim: titleOpacityAnimation,
+                          sizeAnim: titleSizeAnimation,
+                          child: widget.title ?? Container(),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: _buildAnimItem(
-                            opacityAnim: descriptionOpacityAnimation,
-                            sizeAnim: descriptionSizeAnimation,
-                            child: widget.description ?? Container(),
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: _buildAnimItem(
+                          opacityAnim: descriptionOpacityAnimation,
+                          sizeAnim: descriptionSizeAnimation,
+                          child: widget.description ?? Container(),
                         ),
-                        const SizedBox(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (widget.negativText != null &&
+                              widget.onNegativTap != null)
                             _buildAnimItem(
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
-                                widget.negativText,
-                                widget.onNegativTap,
+                                widget.negativText!,
+                                widget.onNegativTap!,
                                 widget.negativeBtnStyle,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                          const SizedBox(width: 16),
+                          if (widget.positivText != null &&
+                              widget.onPositivTap != null)
                             _buildAnimItem(
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
-                                widget.positivText,
-                                widget.onPositivTap,
+                                widget.positivText!,
+                                widget.onPositivTap!,
                                 widget.positivBtnStyle,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

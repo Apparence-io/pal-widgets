@@ -9,8 +9,6 @@ class AnchoredFullscreenPainter extends CustomPainter {
 
   final Size? anchorSize;
 
-  final double area = 24.0 * 24.0;
-
   final Color? bgColor;
 
   double circle1Width, circle2Width;
@@ -47,15 +45,23 @@ class AnchoredFullscreenPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPainter);
     // canvas.drawCircle(currentPos, radius, clearPainter);
     // canvas.drawRect(currentPos & anchorSize, clearPainter);
-    var radius =
-        sqrt(pow(anchorSize!.width, 2) + pow(anchorSize!.height, 2)) / 2;
-    var center =
-        currentPos!.translate(anchorSize!.width / 2, anchorSize!.height / 2);
+    var radius = radiusCalc;
+    var center = centerCalc;
     canvas.drawCircle(center, radius + padding, circle1Painter);
     canvas.drawCircle(center, radius + padding, circle2Painter);
     canvas.drawCircle(center, radius + padding, clearPainter);
     canvas.restore();
   }
+
+  @pragma('vm:prefer-inline')
+  double get radiusCalc =>
+      sqrt(pow(anchorSize!.width, 2) + pow(anchorSize!.height, 2)) / 2;
+
+  @pragma('vm:prefer-inline')
+  Offset get centerCalc => currentPos!.translate(
+        anchorSize!.width / 2,
+        anchorSize!.height / 2,
+      );
 
   @override
   bool shouldRepaint(AnchoredFullscreenPainter oldDelegate) {
@@ -68,8 +74,8 @@ class AnchoredFullscreenPainter extends CustomPainter {
   @override
   bool hitTest(Offset position) {
     if (currentPos == null) return false;
-    var distance = (position - currentPos!).distanceSquared;
-    if (distance <= area) {
+    var distance = (position - centerCalc).distance;
+    if (distance <= radiusCalc) {
       return true;
     }
     return false;
