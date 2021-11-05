@@ -75,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
         bgColor: Colors.blue,
         negativText: const Text('cancel'),
         positivText: const Text('Ok, understood'),
-        onError: () => print("widget not found"),
         positivBtnStyle: helperOutlineBtnStyle,
         negativeBtnStyle: helperOutlineBtnStyle,
         onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),

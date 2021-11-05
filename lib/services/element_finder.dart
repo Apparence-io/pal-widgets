@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 
+const minWritableSpace = 100;
+
 /// This class helps you find element within your app
 /// use [searchChildElement] with a String containing key value
 /// result is available in [result] and returns an [Element]
@@ -80,9 +82,8 @@ class ElementFinder {
         availableHSpace.size.width * availableHSpace.size.height;
     var availableWSpaceArea =
         availableWSpace.size.width * availableWSpace.size.height;
-    const MIN_WRITABLE_SPACE = 100;
     if (availableWSpaceArea > availableHSpaceArea &&
-        availableWSpace.width > MIN_WRITABLE_SPACE) {
+        availableWSpace.width > minWritableSpace) {
       return availableWSpace;
     }
     return availableHSpace;
