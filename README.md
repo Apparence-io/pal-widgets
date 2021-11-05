@@ -8,6 +8,7 @@ A flutter package for better onboarding.
 
 ## Install package
 add in your pubspec.yaml dependencies
+
 ```pal-widgets: 0.0.1```
 
 ## Anchored helper

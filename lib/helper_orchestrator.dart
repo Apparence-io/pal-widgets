@@ -64,6 +64,10 @@ class HelperOrchestrator extends StatefulWidget {
   HelperOrchestratorState createState() => HelperOrchestratorState();
 }
 
+/// State for [HelperOrchestrator]
+///
+/// Can display an helper as overlay above a child using
+/// the current [BuildContext] and [HelperOrchestrator.of]
 class HelperOrchestratorState extends State<HelperOrchestrator> {
   final Map<String, Key> keys = {};
   final OverlayHelper _overlayHelper = OverlayHelper();
@@ -75,6 +79,11 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     _elementFinder = ElementFinder(context);
   }
 
+  /// generate a [key] that will be registered within HelperOrchestrator
+  /// this keyId is associated with the key and can be found again
+  /// using [getAnchorKey]
+  /// The key will be used to find the element position when requesting
+  /// [showAnchoredHelper]
   Key generateKey(String key) {
     // final uniqueKey = UniqueKey();
     final uniqueKey = ValueKey(key);
@@ -82,6 +91,8 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     return uniqueKey;
   }
 
+  /// Returns the [Key] from the KeyId if found.
+  /// this throws if not found.
   Key getAnchorKey(String keyId) {
     if (keys.containsKey(keyId)) {
       return keys[keyId]!;
@@ -89,8 +100,14 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     throw 'Key not found';
   }
 
+  /// This shows an [AnchoredHelper] above your page as overlay
+  ///
+  /// requires [anchorKeyId] that must have been generated within a widget using
+  /// ```dart
+  /// HelperOrchestrator.of(context).generateKey('myKeyId')
+  /// ```
   Future showAnchoredHelper(String anchorKeyId, AnchoredHelper helper) async {
-    final anchor = await findAnchor(context, anchorKeyId);
+    final anchor = await findAnchor(anchorKeyId);
     if (anchor == null) {
       debugPrint("anchor cannot be found. show anchored failed");
       return;
@@ -104,7 +121,11 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     );
   }
 
-  Future<Anchor?> findAnchor(BuildContext context, String anchorKeyId) async {
+  /// Returns an [Anchor] wich contains position, size and rect of the widget
+  /// containing the key.
+  ///
+  /// this requires an [anchorKeyId] to search within our keys
+  Future<Anchor?> findAnchor(String anchorKeyId) async {
     final element = _elementFinder! //
         .searchChildElementByKey(getAnchorKey(anchorKeyId));
     if (element == null || element.bounds == null) {
@@ -121,6 +142,8 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     );
   }
 
+  /// Hide the current overlayed helper
+  /// this do nothing if there is no helper overlayed.
   void hideHelper() {
     _overlayHelper.popHelper();
   }
@@ -133,86 +156,3 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     );
   }
 }
-
-// class HelperOrchestrator extends InheritedWidget {
-//   final Map<String, Key> keys;
-//   final OverlayHelper _overlayHelper;
-//   final ElementFinder elementFinder;
-//   final WidgetBuilder builder;
-
-//   HelperOrchestrator({
-//     Key? key,
-//     required this.elementFinder,
-//     required this.builder,
-//   })  : _overlayHelper = OverlayHelper(),
-//         keys = {},
-//         super(
-//           key: key,
-//           child: Builder(builder: builder),
-//         );
-
-//   static HelperOrchestrator? of(BuildContext context) =>
-//       context.dependOnInheritedWidgetOfExactType<HelperOrchestrator>();
-
-//   Key generateKey(String key) {
-//     // final uniqueKey = UniqueKey();
-//     final uniqueKey = ValueKey(key);
-//     keys[key] = uniqueKey;
-//     return uniqueKey;
-//   }
-
-//   Key getAnchorKey(String keyId) {
-//     if (keys.containsKey(keyId)) {
-//       return keys[keyId]!;
-//     }
-//     throw 'Key not found';
-//   }
-
-//   Future showAnchoredHelper(
-//       BuildContext context, String anchorKeyId, AnchoredHelper helper) async {
-//     final anchor = await findAnchor(context, anchorKeyId);
-//     if (anchor == null) {
-//       debugPrint("anchor cannot be found. show anchored failed");
-//       return;
-//     }
-//     _overlayHelper.showHelper(
-//       context,
-//       (context) => AnchorHelperWrapper(
-//         anchor: anchor,
-//         child: helper,
-//       ),
-//     );
-//   }
-
-//   void hideHelper() {
-//     _overlayHelper.popHelper();
-//   }
-
-//   Future<Anchor?> findAnchor(BuildContext context, String anchorKeyId) async {
-//     final element =
-//         elementFinder.searchChildElementByKey(getAnchorKey(anchorKeyId));
-//     if (element == null || element.bounds == null) {
-//       debugPrint("anchor not found");
-//       return null;
-//     }
-//     final anchorSize = element.bounds!.size;
-//     final currentPos = element.offset!;
-//     final writeArea = elementFinder.getLargestAvailableSpace(element);
-//     return Anchor(
-//       size: anchorSize,
-//       offset: currentPos,
-//       rect: writeArea,
-//     );
-//   }
-
-//   @override
-//   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
-// }
-
-// mixin HelperOrchestratorStateMixin<T extends StatefulWidget> on State<T> {
-//   void hideHelper() => HelperOrchestrator.of(context)!.hideHelper();
-
-//   Future<void> showAnchoredHelper(String anchorKeyId, AnchoredHelper helper) =>
-//       HelperOrchestrator.of(context)! //
-//           .showAnchoredHelper(context, 'text1', helper);
-// }
