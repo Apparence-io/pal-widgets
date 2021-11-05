@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pal_widgets/animations/pop_anim.dart';
 
 import 'anchor_model.dart';
 import 'animated_circle_painter.dart';
@@ -156,7 +157,8 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: _buildAnimItem(
+                        child: PopAnimation(
+                          animation: fadeAnimController,
                           opacityAnim: titleOpacityAnimation,
                           sizeAnim: titleSizeAnimation,
                           child: widget.title ?? Container(),
@@ -164,7 +166,8 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: _buildAnimItem(
+                        child: PopAnimation(
+                          animation: fadeAnimController,
                           opacityAnim: descriptionOpacityAnimation,
                           sizeAnim: descriptionSizeAnimation,
                           child: widget.description ?? Container(),
@@ -177,7 +180,8 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                         children: [
                           if (widget.negativText != null &&
                               widget.onNegativTap != null)
-                            _buildAnimItem(
+                            PopAnimation(
+                              animation: fadeAnimController,
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
@@ -189,7 +193,8 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                           const SizedBox(width: 16),
                           if (widget.positivText != null &&
                               widget.onPositivTap != null)
-                            _buildAnimItem(
+                            PopAnimation(
+                              animation: fadeAnimController,
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
@@ -226,24 +231,4 @@ class _AnchoredHelperState extends State<AnchoredHelper>
       child: text,
     );
   }
-
-  Widget _buildAnimItem({
-    Animation<double>? sizeAnim,
-    Animation<double>? opacityAnim,
-    Widget? child,
-  }) =>
-      AnimatedBuilder(
-        animation: fadeAnimController,
-        builder: (context, child) => Transform.translate(
-          offset: Offset(0, -100 + ((sizeAnim?.value ?? 0) * 100)),
-          child: Transform.scale(
-            scale: sizeAnim?.value ?? 0,
-            child: Opacity(
-              opacity: opacityAnim?.value ?? 0,
-              child: child,
-            ),
-          ),
-        ),
-        child: child,
-      );
 }

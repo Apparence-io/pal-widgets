@@ -11,6 +11,9 @@ class AnchoredFullscreenPainter extends CustomPainter {
 
   final Color? bgColor;
 
+  double? radius;
+  Offset? center;
+
   double circle1Width, circle2Width;
 
   AnchoredFullscreenPainter({
@@ -45,11 +48,11 @@ class AnchoredFullscreenPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPainter);
     // canvas.drawCircle(currentPos, radius, clearPainter);
     // canvas.drawRect(currentPos & anchorSize, clearPainter);
-    var radius = radiusCalc;
-    var center = centerCalc;
-    canvas.drawCircle(center, radius + padding, circle1Painter);
-    canvas.drawCircle(center, radius + padding, circle2Painter);
-    canvas.drawCircle(center, radius + padding, clearPainter);
+    radius = radiusCalc;
+    center = centerCalc;
+    canvas.drawCircle(center!, radius! + padding, circle1Painter);
+    canvas.drawCircle(center!, radius! + padding, circle2Painter);
+    canvas.drawCircle(center!, radius! + padding, clearPainter);
     canvas.restore();
   }
 
@@ -74,8 +77,8 @@ class AnchoredFullscreenPainter extends CustomPainter {
   @override
   bool hitTest(Offset position) {
     if (currentPos == null) return false;
-    var distance = (position - centerCalc).distance;
-    if (distance <= radiusCalc) {
+    var distance = (position - center!).distance;
+    if (distance <= radius!) {
       return true;
     }
     return false;
