@@ -3,11 +3,12 @@
 </p>
 <br>
 <p align="center">
-<a href="https://github.com/Apparence-io/pal-widgets/actions"><img src="https://img.shields.io/github/workflow/status/Apparence-io/pal-widgets/main" alt="build"></a>
+<a href="https://github.com/Apparence-io/pal-widgets/actions"><img src="https://img.shields.io/github/workflow/status/Apparence-io/pal-widgets/master" alt="build"></a>
 <a href="https://codecov.io/gh/Apparence-io/pal-widgets"><img src="https://codecov.io/gh/Apparence-io/pal-widgets/branch/master/graph/badge.svg?token=M2CACTWTLM"/></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 </p>
 <br>
+
 # Pal widgets
 A flutter package for better onboarding. 
 
