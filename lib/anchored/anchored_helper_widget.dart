@@ -201,7 +201,10 @@ class _AnchoredHelperState extends State<AnchoredHelper>
   }
 
   Widget _buildEditableBordered(
-      Text text, Function onTap, ButtonStyle? outlineButtonStyle) {
+    Text text,
+    Function onTap,
+    ButtonStyle? outlineButtonStyle,
+  ) {
     return OutlinedButton(
       onPressed: () async {
         HapticFeedback.selectionClick();
@@ -213,10 +216,11 @@ class _AnchoredHelperState extends State<AnchoredHelper>
     );
   }
 
-  Widget _buildAnimItem(
-          {Animation<double>? sizeAnim,
-          Animation<double>? opacityAnim,
-          Widget? child}) =>
+  Widget _buildAnimItem({
+    Animation<double>? sizeAnim,
+    Animation<double>? opacityAnim,
+    Widget? child,
+  }) =>
       AnimatedBuilder(
         animation: fadeAnimController,
         builder: (context, child) => Transform.translate(
