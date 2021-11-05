@@ -12,7 +12,9 @@ class MyAppWithAnchored extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HelperOrchestrator(
+        child: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
@@ -52,10 +54,40 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
 
+  AnchoredHelper get helper => AnchoredHelper(
+        anchorKeyId: 'text1',
+        title: const Text(
+          'Title lorem pitume',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 32,
+          ),
+        ),
+        description: const Text(
+          'Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 21,
+          ),
+        ),
+        bgColor: Colors.blue,
+        negativText: const Text('cancel'),
+        positivText: const Text('Ok, understood'),
+        onError: () => print("widget not found"),
+        positivBtnStyle: helperOutlineBtnStyle,
+        negativeBtnStyle: helperOutlineBtnStyle,
+        onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
+        onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
+      );
+
   @override
   Widget build(BuildContext context) {
-    return PalApp(
-      builder: (context) => Scaffold(
+    return content;
+  }
+
+  Widget get content => Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
@@ -68,47 +100,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 '$_counter',
-                key: HelperOrchestrator.of(context)!.generateKey('text1'),
+                key: HelperOrchestrator.of(context).generateKey('text1'),
                 style: const TextStyle(color: Colors.blue, fontSize: 32),
               ),
               Text(
                 'test widget helper',
-                key: HelperOrchestrator.of(context)!.generateKey('text2'),
+                key: HelperOrchestrator.of(context).generateKey('text2'),
               ),
               const SizedBox(height: 21),
               OutlinedButton(
                 onPressed: () {
-                  final helper = AnchoredHelper(
-                    anchorKeyId: 'text1',
-                    title: const Text(
-                      'Title lorem pitume',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                      ),
-                    ),
-                    description: const Text(
-                      'Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 21,
-                      ),
-                    ),
-                    bgColor: Colors.blue,
-                    negativText: const Text('cancel'),
-                    positivText: const Text('Ok, understood'),
-                    onError: () => print("widget not found"),
-                    positivBtnStyle: helperOutlineBtnStyle,
-                    negativeBtnStyle: helperOutlineBtnStyle,
-                    onNegativTap: () =>
-                        HelperOrchestrator.of(context)!.hideHelper(),
-                    onPositivTap: () =>
-                        HelperOrchestrator.of(context)!.hideHelper(),
-                  );
-                  HelperOrchestrator.of(context)!
-                      .showAnchoredHelper(context, 'text1', helper);
+                  HelperOrchestrator.of(context)
+                      .showAnchoredHelper('text1', helper);
                 },
                 child: const Text('push me 2'),
               ),
@@ -120,7 +123,5 @@ class _MyHomePageState extends State<MyHomePage> {
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ),
-      ),
-    );
-  }
+      );
 }

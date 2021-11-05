@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HelperOrchestrator(
+        child: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
@@ -39,6 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      HelperOrchestrator.of(context).showAnchoredHelper('btn', helper);
+    });
+  }
+
   ButtonStyle get helperOutlineBtnStyle => OutlinedButton.styleFrom(
         primary: Colors.white,
         padding: const EdgeInsets.all(12),
@@ -58,73 +68,70 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PalApp(
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: const TextStyle(color: Colors.blue, fontSize: 32),
+            ),
+            Text(
+              'test widget helper',
+              key: HelperOrchestrator.of(context).generateKey('text2'),
+            ),
+            const SizedBox(height: 21),
+            OutlinedButton(
+              onPressed: () {
+                HelperOrchestrator.of(context)
+                    .showAnchoredHelper('text1', helper);
+              },
+              child: const Text('push me 2'),
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'You have pushed the button this many times:',
-              ),
-              Text(
-                '$_counter',
-                key: HelperOrchestrator.of(context)!.generateKey('text1'),
-                style: const TextStyle(color: Colors.blue, fontSize: 32),
-              ),
-              Text(
-                'test widget helper',
-                key: HelperOrchestrator.of(context)!.generateKey('text2'),
-              ),
-              const SizedBox(height: 21),
-              OutlinedButton(
-                onPressed: () {
-                  final helper = AnchoredHelper(
-                    anchorKeyId: 'text1',
-                    title: const Text(
-                      'Title lorem pitume',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                      ),
-                    ),
-                    description: const Text(
-                      'Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 21,
-                      ),
-                    ),
-                    bgColor: Colors.blue,
-                    negativText: const Text('cancel'),
-                    positivText: const Text('Ok, understood'),
-                    onError: () => print("widget not found"),
-                    positivBtnStyle: helperOutlineBtnStyle,
-                    negativeBtnStyle: helperOutlineBtnStyle,
-                    onNegativTap: () =>
-                        HelperOrchestrator.of(context)!.hideHelper(),
-                    onPositivTap: () =>
-                        HelperOrchestrator.of(context)!.hideHelper(),
-                  );
-                  HelperOrchestrator.of(context)!
-                      .showAnchoredHelper(context, 'text1', helper);
-                },
-                child: const Text('push me 2'),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        key: HelperOrchestrator.of(context).generateKey('btn'),
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }
+
+  AnchoredHelper get helper => AnchoredHelper(
+        anchorKeyId: 'btn',
+        title: const Text(
+          'Push to increment',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 32,
+          ),
+        ),
+        description: const Text(
+          'Tap on this button to increment the flutter demo counter',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 21,
+          ),
+        ),
+        bgColor: Colors.blue,
+        negativText: const Text('cancel'),
+        positivText: const Text('Ok, understood'),
+        onError: () => print("widget not found"),
+        positivBtnStyle: helperOutlineBtnStyle,
+        negativeBtnStyle: helperOutlineBtnStyle,
+        onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
+        onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
+      );
 }

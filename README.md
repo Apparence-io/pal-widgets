@@ -14,14 +14,14 @@ add in your pubspec.yaml dependencies
 This widgets is highly inspired by google onboardings. This shows a circle around any widgets you want and add an overlay were you can add 
 a message. 
 
-First embbed you page or your app with a **PalApp** widget. 
+First embbed you page or your app with a **HelperOrchestrator** widget. 
 ```dart
-PalApp(
-    builder: (context) => Scaffold(
-    appBar: AppBar(
-        title: Text(widget.title),
-    ),
-    body: ...
+HelperOrchestrator(
+    child: Scaffold(
+        appBar: AppBar(
+            title: Text(widget.title),
+        ),
+        body: ...
     ),
 )
 ```
@@ -30,7 +30,7 @@ You now have to get a key *text1* for the widget you want to reference using
 ```dart 
 Text(
     '$_counter',
-    key: HelperOrchestrator.of(context)!.generateKey('text1'),
+    key: HelperOrchestrator.of(context).generateKey('text1'),
 ),
 ```
 
@@ -61,14 +61,13 @@ final helper = AnchoredHelper(
     positivBtnStyle: helperOutlineBtnStyle,
     negativeBtnStyle: helperOutlineBtnStyle,
     onNegativTap: () =>
-        HelperOrchestrator.of(context)!.hideHelper(),
+        HelperOrchestrator.of(context).hideHelper(),
     onPositivTap: () =>
-        HelperOrchestrator.of(context)!.hideHelper(),
+        HelperOrchestrator.of(context).hideHelper(),
 );
 // this will show an overlayed anchored widget using the key text1
-HelperOrchestrator.of(context)!.showAnchoredHelper(context, 'text1', helper);
+HelperOrchestrator.of(context).showAnchoredHelper('text1', helper);
 ```
-
 
 ## Any question? 
 Contact us on [our twitter](https://twitter.com/PalFlutter) or email gautier[@@]pal-plugin.tech
