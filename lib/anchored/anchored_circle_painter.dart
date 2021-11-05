@@ -77,8 +77,8 @@ class AnchoredFullscreenPainter extends CustomPainter {
   @override
   bool hitTest(Offset position) {
     if (currentPos == null) return false;
-    var distance = (position - center!).distance;
-    if (distance <= radius!) {
+    var distance = (position - (center ?? centerCalc)).distance;
+    if (distance <= (radius ?? radiusCalc)) {
       return true;
     }
     return false;

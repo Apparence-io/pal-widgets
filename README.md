@@ -45,33 +45,19 @@ You can now show an anchored helper using
 ```dart
 final helper = AnchoredHelper(
     anchorKeyId: 'text1',
-    title: const Text(
-        'Title lorem pitume',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-        color: Colors.white,
-        fontSize: 32,
-        ),
-    ),
-    description: const Text(
-        'Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-        color: Colors.white,
-        fontSize: 21,
-        ),
-    ),
+    title: const Text('Title lorem pitume'),
+    description: const Text('Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum'),,
     bgColor: Colors.blue,
     negativText: const Text('cancel'),
     positivText: const Text('Ok, understood'),
     onError: () => print("widget not found"),
     positivBtnStyle: helperOutlineBtnStyle,
     negativeBtnStyle: helperOutlineBtnStyle,
-    onNegativTap: () =>
-        HelperOrchestrator.of(context).hideHelper(),
-    onPositivTap: () =>
-        HelperOrchestrator.of(context).hideHelper(),
+    onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
+    onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
+    onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
 );
+
 // this will show an overlayed anchored widget using the key text1
 HelperOrchestrator.of(context).showAnchoredHelper('text1', helper);
 ```
