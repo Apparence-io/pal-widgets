@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Used by [AnchoredWidget] to paint the background
 abstract class AnchorWidgetFactory {
   const AnchorWidgetFactory();
 

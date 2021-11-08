@@ -127,8 +127,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         bgColor: Colors.blue,
-        // negativText: const Text('cancel'),
-        // positivText: const Text('Ok, understood'),
+        negativText: const Text('cancel'),
+        positivText: const Text('Ok, understood'),
         onError: () {
           // do as you want if error happens
         },
