@@ -21,6 +21,7 @@ class _AnchoredHoleHelperFactory extends AnchorWidgetFactory {
       bgColor: bgColor,
       anchorSize: anchorSize,
       listenable: listenable!,
+      onTap: onTap,
     );
   }
 }
