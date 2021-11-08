@@ -17,7 +17,7 @@ A set of amazing onboarding widgets for your flutter applications.
 ## Install package
 add in your pubspec.yaml dependencies
 
-```pal-widgets: 0.0.1+4```
+```pal-widgets: 0.0.1+5```
 
 ----
 
