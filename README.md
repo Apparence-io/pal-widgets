@@ -1,5 +1,5 @@
 <p align="left">
-<img src="./doc/img/pal-showcase.jpg" alt="flutter anchored onboarding screen" />
+<img src="https://github.com/Apparence-io/pal-widgets/raw/master/doc/img/pal-showcase.jpg" alt="flutter anchored onboarding screen" />
 </p>
 <br>
 <p align="center">
