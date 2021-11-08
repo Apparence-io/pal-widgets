@@ -6,6 +6,7 @@
 <a href="https://github.com/Apparence-io/pal-widgets/actions"><img src="https://img.shields.io/github/workflow/status/Apparence-io/pal-widgets/pal-widgets/master" alt="build"></a>
 <a href="https://codecov.io/gh/Apparence-io/pal-widgets"><img src="https://codecov.io/gh/Apparence-io/pal-widgets/branch/master/graph/badge.svg?token=M2CACTWTLM"/></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
+<a href="https://pub.dev/packages/pal_widgets"><img src="https://img.shields.io/pub/v/pal_widgets" alt="Pal widgets pubdev"></a>
 </p>
 <br>
 
@@ -17,7 +18,7 @@ A set of amazing onboarding widgets for your flutter applications.
 ## Install package
 add in your pubspec.yaml dependencies
 
-```pal-widgets: 0.0.1+5```
+```pal-widgets: 0.0.2```
 
 ----
 
