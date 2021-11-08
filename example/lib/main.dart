@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        splashFactory: InkSplash.splashFactory,
       ),
       home: const HelperOrchestrator(
         child: MyHomePage(title: 'Flutter Demo Home Page'),

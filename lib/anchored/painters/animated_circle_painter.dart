@@ -1,9 +1,34 @@
 // coverage:ignore-file
 import 'package:flutter/material.dart';
 
+import 'anchor_painter.dart';
 import 'anchored_circle_painter.dart';
 
-class AnimatedAnchoredFullscreenCircle extends AnimatedWidget {
+class _AnchoredHoleHelperFactory extends AnchorWidgetFactory {
+  const _AnchoredHoleHelperFactory();
+
+  @override
+  Widget create({
+    Offset? currentPos,
+    Size? anchorSize,
+    Color? bgColor,
+    Function? onTap,
+    Listenable? listenable,
+  }) {
+    return AnchoredHoleHelper(
+      currentPos: currentPos,
+      padding: 8,
+      bgColor: bgColor,
+      anchorSize: anchorSize,
+      listenable: listenable!,
+    );
+  }
+}
+
+/// Helper explaining a widget
+/// this creates a full background widget with a hole of the size of the aimed
+/// widget.
+class AnchoredHoleHelper extends AnimatedWidget {
   final Offset? currentPos;
   final double padding;
   final Size? anchorSize;
@@ -12,7 +37,9 @@ class AnimatedAnchoredFullscreenCircle extends AnimatedWidget {
 
   final Animation<double> _stroke1Animation, _stroke2Animation;
 
-  AnimatedAnchoredFullscreenCircle({
+  static const AnchorWidgetFactory anchorFactory = _AnchoredHoleHelperFactory();
+
+  AnchoredHoleHelper({
     Key? key,
     required this.currentPos,
     required this.padding,

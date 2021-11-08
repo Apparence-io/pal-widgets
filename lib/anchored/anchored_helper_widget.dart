@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:pal_widgets/animations/pop_anim.dart';
 
 import 'anchor_model.dart';
-import 'animated_circle_painter.dart';
+import 'painters/anchor_painter.dart';
+import 'painters/animated_circle_painter.dart';
 
 class AnchorHelperWrapper extends InheritedWidget {
   final Anchor anchor;
@@ -23,18 +24,52 @@ class AnchorHelperWrapper extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
 }
 
+/// This widget is an helper based on the position of a widget
+/// you must have an ancestor of type [HelperOrchestrator]
+///
+/// to create a
+/// You can change [widgetFactory] to create your own anchored widget or use one of
+/// - [AnchoredHoleHelper.anchorFactory]
+///
+/// You are free to add a positiv button / negativ button or an onTap function
+/// on the anchor.
 class AnchoredHelper extends StatefulWidget {
+  /// The reference to the [Key] created by [HelperOrchestrator]
   final String anchorKeyId;
+
+  /// A [Text] widget to show as title
   final Text? title;
+
+  /// A [Text] widget to show as description
   final Text? description;
+
+  /// A Color as Overlayed background
   final Color bgColor;
 
-  final Text? negativText, positivText;
+  /// A [Text] widget to show within the negativ button
+  final Text? negativText;
+
+  /// A [Text] widget to show within the positiv button
+  final Text? positivText;
+
+  /// Functions to call when user tap on negativ or positiv button
   final Function? onPositivTap, onNegativTap;
+
+  /// Functions to call when widgets encounters any errors
   final Function? onError;
+
+  /// Buttons material style
   final ButtonStyle? negativeBtnStyle, positivBtnStyle;
+
+  /// If you want to use a custom position. Else we will use the [HelperOrchestrator]
+  /// to get this using the [anchorKeyId]
   final Anchor? anchor;
+
+  /// function called when user type on anchor position
   final Function? onTapAnchor;
+
+  /// factory to create the all background with the hole
+  final AnchorWidgetFactory widgetFactory;
 
   const AnchoredHelper({
     required this.anchorKeyId,
@@ -51,6 +86,7 @@ class AnchoredHelper extends StatefulWidget {
     Key? key,
     required this.bgColor,
     this.anchor,
+    this.widgetFactory = AnchoredHoleHelper.anchorFactory,
   }) : super(key: key);
 
   @override
@@ -78,7 +114,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
         vsync: this, duration: const Duration(milliseconds: 2000));
     backgroundAnimation = CurvedAnimation(
       parent: fadeAnimController,
-      curve: const Interval(0, .4, curve: Curves.easeIn),
+      curve: const Interval(0, .2, curve: Curves.easeIn),
     );
     titleOpacityAnimation = CurvedAnimation(
       parent: fadeAnimController,
@@ -125,11 +161,10 @@ class _AnchoredHelperState extends State<AnchoredHelper>
           Positioned.fill(
             child: FadeTransition(
               opacity: backgroundAnimation,
-              child: AnimatedAnchoredFullscreenCircle(
+              child: widget.widgetFactory.create(
                 currentPos: anchor.offset,
                 anchorSize: anchor.size,
                 bgColor: widget.bgColor,
-                padding: 8,
                 listenable: anchorAnimationController,
                 onTap: () async {
                   if (widget.onTapAnchor != null) {

@@ -17,6 +17,14 @@ add in your pubspec.yaml dependencies
 
 ```pal-widgets: 0.0.1```
 
+----
+
+## List of helpers
+
+| Name           |      description                             |  status   |
+|----------------|----------------------------------------------|-----------|
+| AnchoredHelper | An helper do describe another widget of your page. This creates an overlay above your page | :white_check_mark: |
+
 ## Anchored helper
 This widgets is highly inspired by google onboardings. This shows a circle around any widgets you want and add an overlay were you can add 
 a message. 
@@ -41,6 +49,7 @@ Text(
 ),
 ```
 
+### Example
 You can now show an anchored helper using 
 ```dart
 final helper = AnchoredHelper(
@@ -56,11 +65,32 @@ final helper = AnchoredHelper(
     onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
     onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
     onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
+    onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
 );
 
 // this will show an overlayed anchored widget using the key text1
 HelperOrchestrator.of(context).showAnchoredHelper('text1', helper);
 ```
+
+### properties
+
+| Property           |      description                             |  Required   |
+|--------------------|----------------------------------------------|-------------|
+| anchorKeyId        | The reference to the [Key] created by [HelperOrchestrator] |:white_check_mark:|
+| title        | A Text widget to show as title | |
+| description        | A Text widget to show as description | |
+| bgColor        | A Color as Overlayed background | :white_check_mark: |
+| negativText        | A [Text] widget to show within the negativ button |  |
+| positivText        | A [Text] widget to show within the positiv button |  |
+| onPositivTap        | Action on tap positiv button |  |
+| onNegativTap        | Action on tap negativ button |  |
+| onError        | Functions to call when widgets encounters any errors |  |
+| negativeBtnStyle        | Material style to  put on negativ button |  |
+| positivBtnStyle        | Material style to  put on positiv button |  |
+| onTapAnchor        | Action to call when user tap on anchor |  |
+| widgetFactory        | The Widget factory to create the anchored helper. Default to AnchoredHoleHelper.anchorFactory which creates a full overlay with an animated hole |  |
+
+
 
 ## Any question? 
 Contact us on [our twitter](https://twitter.com/PalFlutter) or email gautier[@@]pal-plugin.tech
