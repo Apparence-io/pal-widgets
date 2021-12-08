@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pal_widgets/anchored/painters/anchored_rect_painter.dart';
 import 'package:pal_widgets/pal_widgets.dart';
 
 void main() {
