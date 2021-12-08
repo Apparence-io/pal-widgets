@@ -73,12 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         bgColor: Colors.blue,
-        negativText: const Text('cancel'),
-        positivText: const Text('Ok, understood'),
-        positivBtnStyle: helperOutlineBtnStyle,
-        negativeBtnStyle: helperOutlineBtnStyle,
-        onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
-        onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
+        leftBtnText: const Text('cancel'),
+        rightBtnText: const Text('Ok, understood'),
+        rightBtnStyle: helperOutlineBtnStyle,
+        leftBtnStyle: helperOutlineBtnStyle,
+        onRightTap: () => HelperOrchestrator.of(context).hideHelper(),
+        onLeftBtnTap: () => HelperOrchestrator.of(context).hideHelper(),
         widgetFactory: AnchoredRectHoleHelper.anchorFactory,
       );
 

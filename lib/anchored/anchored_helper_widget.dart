@@ -46,20 +46,20 @@ class AnchoredHelper extends StatefulWidget {
   /// A Color as Overlayed background
   final Color bgColor;
 
-  /// A [Text] widget to show within the negativ button
-  final Text? negativText;
+  /// A [Text] widget to show within the left button
+  final Text? leftBtnText;
 
-  /// A [Text] widget to show within the positiv button
-  final Text? positivText;
+  /// A [Text] widget to show within the right button
+  final Text? rightBtnText;
 
-  /// Functions to call when user tap on negativ or positiv button
-  final Function? onPositivTap, onNegativTap;
+  /// Functions to call when user tap on left or right button
+  final Function? onLeftBtnTap, onRightTap;
 
   /// Functions to call when widgets encounters any errors
   final Function? onError;
 
   /// Buttons material style
-  final ButtonStyle? negativeBtnStyle, positivBtnStyle;
+  final ButtonStyle? leftBtnStyle, rightBtnStyle;
 
   /// If you want to use a custom position. Else we will use the [HelperOrchestrator]
   /// to get this using the [anchorKeyId]
@@ -77,15 +77,15 @@ class AnchoredHelper extends StatefulWidget {
 
   const AnchoredHelper({
     required this.anchorKeyId,
-    this.onPositivTap,
-    this.onNegativTap,
-    this.positivText,
-    this.negativText,
+    this.onLeftBtnTap,
+    this.onRightTap,
+    this.rightBtnText,
+    this.leftBtnText,
     this.title,
     this.description,
     this.onError,
-    this.negativeBtnStyle,
-    this.positivBtnStyle,
+    this.leftBtnStyle,
+    this.rightBtnStyle,
     this.onTapAnchor,
     Key? key,
     required this.bgColor,
@@ -217,29 +217,29 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          if (widget.negativText != null &&
-                              widget.onNegativTap != null)
+                          if (widget.leftBtnText != null &&
+                              widget.onRightTap != null)
                             PopAnimation(
                               animation: fadeAnimController,
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
-                                widget.negativText!,
-                                widget.onNegativTap!,
-                                widget.negativeBtnStyle,
+                                widget.leftBtnText!,
+                                widget.onRightTap!,
+                                widget.leftBtnStyle,
                               ),
                             ),
                           const SizedBox(width: 16),
-                          if (widget.positivText != null &&
-                              widget.onPositivTap != null)
+                          if (widget.rightBtnText != null &&
+                              widget.onLeftBtnTap != null)
                             PopAnimation(
                               animation: fadeAnimController,
                               opacityAnim: btnOpacityAnimation,
                               sizeAnim: btnSizeAnimation,
                               child: _buildEditableBordered(
-                                widget.positivText!,
-                                widget.onPositivTap!,
-                                widget.positivBtnStyle,
+                                widget.rightBtnText!,
+                                widget.onLeftBtnTap!,
+                                widget.rightBtnStyle,
                               ),
                             ),
                         ],

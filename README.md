@@ -18,7 +18,7 @@ A set of amazing onboarding widgets for your flutter applications.
 ## Install package
 add in your pubspec.yaml dependencies
 
-```pal-widgets: 0.0.2```
+```pal-widgets: 0.2.0```
 
 ----
 
@@ -60,14 +60,13 @@ final helper = AnchoredHelper(
     title: const Text('Title lorem pitume'),
     description: const Text('Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum'),,
     bgColor: Colors.blue,
-    negativText: const Text('cancel'),
-    positivText: const Text('Ok, understood'),
+    leftBtnText: const Text('cancel'),
+    rightBtnText: const Text('Ok, understood'),
     onError: () => print("widget not found"),
     positivBtnStyle: helperOutlineBtnStyle,
     negativeBtnStyle: helperOutlineBtnStyle,
-    onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
-    onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
-    onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
+    onLeftBtnTap: () => HelperOrchestrator.of(context).hideHelper(),
+    onRightTap: () => HelperOrchestrator.of(context).hideHelper(),
     onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
 );
 
@@ -83,17 +82,19 @@ HelperOrchestrator.of(context).showAnchoredHelper('text1', helper);
 | title        | A Text widget to show as title | |
 | description        | A Text widget to show as description | |
 | bgColor        | A Color as Overlayed background | :white_check_mark: |
-| negativText        | A [Text] widget to show within the negativ button |  |
-| positivText        | A [Text] widget to show within the positiv button |  |
-| onPositivTap        | Action on tap positiv button |  |
-| onNegativTap        | Action on tap negativ button |  |
+| leftBtnText        | A [Text] widget to show within the left button |  |
+| rightBtnText        | A [Text] widget to show within the right button |  |
+| onLeftBtnTap        | Action on tap left button |  |
+| onRightTap        | Action on tap right button |  |
 | onError        | Functions to call when widgets encounters any errors |  |
-| negativeBtnStyle        | Material style to  put on negativ button |  |
-| positivBtnStyle        | Material style to  put on positiv button |  |
+| leftBtnStyle        | Material style to  put on negativ button |  |
+| rightBtnStyle        | Material style to  put on positiv button |  |
 | onTapAnchor        | Action to call when user tap on anchor |  |
-| widgetFactory        | The Widget factory to create the anchored helper. Default to AnchoredHoleHelper.anchorFactory which creates a full overlay with an animated hole |  |
+| widgetFactory        | The Widget factory to create the anchored helper. Default to AnchoredCircleHoleHelper.anchorFactory which creates a full overlay with an animated hole |  |
 
-
+There is two Hole Anchor widget factories :
+- ```AnchoredCircleHoleHelper.anchorFactory```: creates a circle hole (default value)
+- ```AnchoredRectHoleHelper.anchorFactory``` : creates a rectangle hole on strict widget bounds
 
 ## Any question? 
 Contact us on [our twitter](https://twitter.com/PalFlutter) or email gautier[@@]pal-plugin.tech

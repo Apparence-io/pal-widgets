@@ -74,8 +74,8 @@ class _MyHomePage2State extends State<MyHomePage2> {
         ),
         bgColor: Colors.blue,
         onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
-        positivBtnStyle: helperOutlineBtnStyle,
-        negativeBtnStyle: helperOutlineBtnStyle,
+        rightBtnStyle: helperOutlineBtnStyle,
+        leftBtnStyle: helperOutlineBtnStyle,
       );
 
   @override
