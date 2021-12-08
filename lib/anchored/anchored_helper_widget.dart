@@ -111,11 +111,11 @@ class _AnchoredHelperState extends State<AnchoredHelper>
   @override
   void initState() {
     super.initState();
-    anchorAnimationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
-          ..repeat(reverse: true);
+    anchorAnimationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800))
+      ..repeat(reverse: true);
     fadeAnimController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 2000));
+        vsync: this, duration: const Duration(milliseconds: 1600));
     backgroundAnimation = CurvedAnimation(
       parent: fadeAnimController,
       curve: const Interval(0, .2, curve: Curves.easeIn),

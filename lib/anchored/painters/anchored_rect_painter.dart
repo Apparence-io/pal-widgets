@@ -52,18 +52,14 @@ class AnchoredRectPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPainter);
 
     center = centerCalc;
-    final rect1 = Rect.fromCenter(
-      center: center!,
-      width: anchorSize!.width + padding,
-      height: anchorSize!.height + padding,
+    final rect = Rect.fromLTWH(
+      currentPos!.dx,
+      currentPos!.dy,
+      anchorSize!.width,
+      anchorSize!.height,
     );
-    final rect2 = Rect.fromCenter(
-      center: center!,
-      width: anchorSize!.width + padding,
-      height: anchorSize!.height + padding,
-    );
-    canvas.drawRect(rect1, rect1Painter);
-    canvas.drawRect(rect2, rect2Painter);
+    canvas.drawRect(rect, rect1Painter);
+    canvas.drawRect(rect, rect2Painter);
     canvas.drawRect(currentPos! & anchorSize!, clearPainter);
     canvas.restore();
   }
