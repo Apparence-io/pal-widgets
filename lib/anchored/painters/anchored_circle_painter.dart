@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class AnchoredFullscreenPainter extends CustomPainter {
+class AnchoredCirclePainter extends CustomPainter {
   final Offset? currentPos;
 
   final double padding;
@@ -16,7 +16,7 @@ class AnchoredFullscreenPainter extends CustomPainter {
 
   double circle1Width, circle2Width;
 
-  AnchoredFullscreenPainter({
+  AnchoredCirclePainter({
     this.currentPos,
     this.anchorSize,
     this.padding = 0,
@@ -67,7 +67,7 @@ class AnchoredFullscreenPainter extends CustomPainter {
       );
 
   @override
-  bool shouldRepaint(AnchoredFullscreenPainter oldDelegate) {
+  bool shouldRepaint(AnchoredCirclePainter oldDelegate) {
     return oldDelegate.currentPos != currentPos ||
         oldDelegate.circle1Width != circle1Width ||
         oldDelegate.circle2Width != circle2Width ||

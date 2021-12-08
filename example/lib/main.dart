@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pal_widgets/anchored/painters/anchored_rect_painter.dart';
 import 'package:pal_widgets/pal_widgets.dart';
 
 void main() {
@@ -137,5 +138,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onNegativTap: () => HelperOrchestrator.of(context).hideHelper(),
         onPositivTap: () => HelperOrchestrator.of(context).hideHelper(),
         onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
+        widgetFactory: AnchoredCircleHoleHelper.anchorFactory,
       );
 }

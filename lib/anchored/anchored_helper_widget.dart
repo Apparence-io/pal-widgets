@@ -6,7 +6,7 @@ import 'package:pal_widgets/animations/pop_anim.dart';
 
 import 'anchor_model.dart';
 import 'painters/anchor_painter.dart';
-import 'painters/animated_circle_painter.dart';
+import 'painters/animated_circle.dart';
 
 class AnchorHelperWrapper extends InheritedWidget {
   final Anchor anchor;
@@ -69,6 +69,10 @@ class AnchoredHelper extends StatefulWidget {
   final Function? onTapAnchor;
 
   /// factory to create the all background with the hole
+  /// Use one of these
+  /// - [AnchoredCircleHoleHelper.anchorFactory]
+  /// - [AnchoredRectHoleHelper.anchorFactory]
+  /// or create yours
   final AnchorWidgetFactory widgetFactory;
 
   const AnchoredHelper({
@@ -86,7 +90,7 @@ class AnchoredHelper extends StatefulWidget {
     Key? key,
     required this.bgColor,
     this.anchor,
-    this.widgetFactory = AnchoredHoleHelper.anchorFactory,
+    this.widgetFactory = AnchoredCircleHoleHelper.anchorFactory,
   }) : super(key: key);
 
   @override
