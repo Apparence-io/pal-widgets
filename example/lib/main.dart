@@ -95,12 +95,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     .showAnchoredHelper('btn', helper);
               },
               child: const Text('push me 2'),
+              key: HelperOrchestrator.of(context).generateKey('btn'),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        key: HelperOrchestrator.of(context).generateKey('btn'),
+        // key: HelperOrchestrator.of(context).generateKey('btn'),
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
@@ -127,16 +128,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         bgColor: Colors.blue,
-        leftBtnText: const Text('cancel'),
-        rightBtnText: const Text('Ok, understood'),
+        // leftBtnText: const Text('cancel'),
+        // rightBtnText: const Text('Ok, understood'),
         onError: () {
           // do as you want if error happens
         },
         rightBtnStyle: helperOutlineBtnStyle,
         leftBtnStyle: helperOutlineBtnStyle,
-        onRightTap: () => HelperOrchestrator.of(context).hideHelper(),
-        onLeftBtnTap: () => HelperOrchestrator.of(context).hideHelper(),
+        // onRightTap: () => HelperOrchestrator.of(context).hideHelper(),
+        // onLeftBtnTap: () => HelperOrchestrator.of(context).hideHelper(),
         onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
-        widgetFactory: AnchoredCircleHoleHelper.anchorFactory,
+        widgetFactory: AnchoredRectHoleHelper.anchorFactory,
       );
 }

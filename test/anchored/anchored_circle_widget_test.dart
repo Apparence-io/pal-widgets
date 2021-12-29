@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pal_widgets/pal_widgets.dart';
 
+import '../screen_variants.dart';
 import 'widgets/anchored_circle_page_.dart';
 import 'widgets/anchored_circle_no_buttons.dart';
 
 void main() {
   group('circle anchor widget with buttons', () {
+    final screenSizeVariants = ValueVariant<ScreenSize>(basicPhones);
+
     testWidgets('click on button => shows an anchored widget overlay', (
       WidgetTester tester,
     ) async {
+      await tester.setScreenSize(screenSizeVariants.currentValue!);
+      //---
       await tester.pumpWidget(const MyAppWithCircleAnchored());
       expect(find.byType(AnchoredHelper), findsNothing);
       await tester.tap(find.byType(OutlinedButton).first);
       await tester.pump(const Duration(seconds: 2));
       expect(find.byType(AnchoredHelper), findsOneWidget);
-    });
+    }, variant: screenSizeVariants);
 
     testWidgets(
         'shows an anchored widget overlay => positiv button close helper', (
@@ -29,7 +34,7 @@ void main() {
           as OutlinedButton;
       btn1.onPressed!();
       await tester.pump(const Duration(seconds: 2));
-
+      // variants.currentValue;
       expect(find.byType(AnchoredHelper), findsNothing);
     });
 

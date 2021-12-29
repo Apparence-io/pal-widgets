@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pal_widgets/animations/pop_anim.dart';
@@ -219,27 +217,31 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                         children: [
                           if (widget.leftBtnText != null &&
                               widget.onRightTap != null)
-                            PopAnimation(
-                              animation: fadeAnimController,
-                              opacityAnim: btnOpacityAnimation,
-                              sizeAnim: btnSizeAnimation,
-                              child: _buildEditableBordered(
-                                widget.leftBtnText!,
-                                widget.onRightTap!,
-                                widget.leftBtnStyle,
+                            Expanded(
+                              child: PopAnimation(
+                                animation: fadeAnimController,
+                                opacityAnim: btnOpacityAnimation,
+                                sizeAnim: btnSizeAnimation,
+                                child: _buildEditableBordered(
+                                  widget.leftBtnText!,
+                                  widget.onRightTap!,
+                                  widget.leftBtnStyle,
+                                ),
                               ),
                             ),
                           const SizedBox(width: 16),
                           if (widget.rightBtnText != null &&
                               widget.onLeftBtnTap != null)
-                            PopAnimation(
-                              animation: fadeAnimController,
-                              opacityAnim: btnOpacityAnimation,
-                              sizeAnim: btnSizeAnimation,
-                              child: _buildEditableBordered(
-                                widget.rightBtnText!,
-                                widget.onLeftBtnTap!,
-                                widget.rightBtnStyle,
+                            Expanded(
+                              child: PopAnimation(
+                                animation: fadeAnimController,
+                                opacityAnim: btnOpacityAnimation,
+                                sizeAnim: btnSizeAnimation,
+                                child: _buildEditableBordered(
+                                  widget.rightBtnText!,
+                                  widget.onLeftBtnTap!,
+                                  widget.rightBtnStyle,
+                                ),
                               ),
                             ),
                         ],
