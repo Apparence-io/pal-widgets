@@ -53,6 +53,23 @@ void main() {
 
       expect(find.byType(AnchoredHelper), findsNothing);
     });
+
+    testWidgets(
+      '''shows an anchored widget overlay, anchorAction is null, tap on anchor
+         => nothing happens''',
+      (
+        WidgetTester tester,
+      ) async {
+        await tester.pumpWidget(const MyAppWithCircleAnchored());
+        await tester.tap(find.byType(OutlinedButton).first);
+        await tester.pump(const Duration(seconds: 2));
+        // tap on anchor area button
+        await tester.tap(find.byType(FloatingActionButton));
+        await tester.pump(const Duration(seconds: 2));
+
+        expect(find.byType(AnchoredHelper), findsOneWidget);
+      },
+    );
   });
 
   group('Circle anchor widget - no buttons', () {
