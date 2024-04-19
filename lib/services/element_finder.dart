@@ -8,15 +8,23 @@ const minWritableSpace = 100;
 /// result is available in [result] and returns an [Element]
 class ElementFinder {
   // Prefer use the navigatorContext to get full context tree
-  final BuildContext? context;
+  final BuildContext? buildContext;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
-  ElementFinder(this.context);
+  ElementFinder({this.buildContext, this.navigatorKey});
+
+  BuildContext get context {
+    if (buildContext != null) {
+      return buildContext!;
+    }
+    return navigatorKey!.currentContext!;
+  }
 
   // this method scan all child recursively to get all widget bounds we could select for an helper
   Map<String, ElementModel> scan({Key? omitChildsOf, bool debugMode = false}) {
     Map<String, ElementModel> results = <String, ElementModel>{};
-    context!.visitChildElements((element) => _scanChildElement(
-        context!.findRenderObject(), element, results,
+    context.visitChildElements((element) => _scanChildElement(
+        context.findRenderObject(), element, results,
         omitChildsOf: omitChildsOf, debugMode: debugMode));
     return results;
   }
@@ -24,7 +32,7 @@ class ElementFinder {
   // List all pages from this context
   List<PageElement> scanPages() {
     var pages = [];
-    context!.visitChildElements((element) =>
+    context.visitChildElements((element) =>
         _scanPageChildElement(element, pages as List<PageElement>));
     return pages as List<PageElement>;
   }
@@ -32,8 +40,8 @@ class ElementFinder {
   // this method scan all child recursively to find a widget having a key == searchedKey
   ElementModel? searchChildElement(String? key) {
     ElementModel? result;
-    context!.visitChildElements((element) => result =
-        _searchChildElement(context!.findRenderObject(), element, key));
+    context.visitChildElements((element) => result =
+        _searchChildElement(context.findRenderObject(), element, key));
     if (result == null) {
       return ElementModel.empty();
     }
@@ -42,8 +50,8 @@ class ElementFinder {
 
   ElementModel? searchChildElementByKey(Key key) {
     ElementModel? result;
-    context!.visitChildElements((element) => result =
-        _searchChildElementByKey(context!.findRenderObject(), element, key));
+    context.visitChildElements((element) => result =
+        _searchChildElementByKey(context.findRenderObject(), element, key));
     if (result == null) {
       return ElementModel.empty();
     }
@@ -53,7 +61,7 @@ class ElementFinder {
   /// This functions search for the maximum rect available space
   /// We use it for example to find the most available space to write a text in our anchored helper
   Rect getLargestAvailableSpace(ElementModel elementModel) {
-    var parentObject = context!.findRenderObject()!;
+    var parentObject = context.findRenderObject()!;
     var element = elementModel.element!;
     var translation =
         element.renderObject!.getTransformTo(parentObject).getTranslation();

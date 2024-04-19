@@ -38,7 +38,6 @@ class _MyHomePage2State extends State<MyHomePage2> {
   }
 
   ButtonStyle get helperOutlineBtnStyle => OutlinedButton.styleFrom(
-        primary: Colors.white,
         padding: const EdgeInsets.all(12),
         textStyle: const TextStyle(
           color: Colors.white,

@@ -19,7 +19,7 @@ class PopAnimation extends StatelessWidget {
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) => Transform.translate(
-        offset: Offset(0, -100 + ((sizeAnim?.value ?? 0) * 100)),
+        offset: Offset(0, -40 + ((sizeAnim?.value ?? 0) * 40)),
         child: Transform.scale(
           scale: sizeAnim?.value ?? 0,
           child: Opacity(

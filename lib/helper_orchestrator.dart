@@ -25,8 +25,13 @@ class _HelperOrchestratorScope extends InheritedWidget {
 /// Pal onboarding widgets
 class HelperOrchestrator extends StatefulWidget {
   final Widget child;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
-  const HelperOrchestrator({Key? key, required this.child}) : super(key: key);
+  const HelperOrchestrator({
+    Key? key, 
+    required this.child, 
+    this.navigatorKey,
+  }) : super(key: key);
 
   /// If there is no [HelperOrchestrator] in scope
   ///
@@ -74,9 +79,18 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   ElementFinder? _elementFinder;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _elementFinder = ElementFinder(context);
+    if(widget.navigatorKey != null) {
+      _elementFinder = ElementFinder(navigatorKey: widget.navigatorKey);
+    } else {
+      _elementFinder = ElementFinder(buildContext: context);
+    }
   }
 
   /// generate a [key] that will be registered within HelperOrchestrator

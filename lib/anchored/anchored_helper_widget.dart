@@ -51,7 +51,7 @@ class AnchoredHelper extends StatefulWidget {
   final Text? rightBtnText;
 
   /// Functions to call when user tap on left or right button
-  final Function? onLeftBtnTap, onRightTap;
+  final Function? onLeftBtnTap, onRightTap, onTapBackground;
 
   /// Functions to call when widgets encounters any errors
   final Function? onError;
@@ -85,6 +85,7 @@ class AnchoredHelper extends StatefulWidget {
     this.leftBtnStyle,
     this.rightBtnStyle,
     this.onTapAnchor,
+    this.onTapBackground,
     Key? key,
     required this.bgColor,
     this.anchor,
@@ -110,10 +111,10 @@ class _AnchoredHelperState extends State<AnchoredHelper>
   void initState() {
     super.initState();
     anchorAnimationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800))
+        vsync: this, duration: const Duration(milliseconds: 650))
       ..repeat(reverse: true);
     fadeAnimController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1600));
+        vsync: this, duration: const Duration(milliseconds: 1500));
     backgroundAnimation = CurvedAnimation(
       parent: fadeAnimController,
       curve: const Interval(0, .2, curve: Curves.easeIn),
@@ -156,103 +157,114 @@ class _AnchoredHelperState extends State<AnchoredHelper>
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: FadeTransition(
-              opacity: backgroundAnimation,
-              child: widget.widgetFactory.create(
-                currentPos: anchor.offset,
-                anchorSize: anchor.size,
-                bgColor: widget.bgColor,
-                listenable: anchorAnimationController,
-                onTap: () async {
-                  if (widget.onTapAnchor != null) {
-                    HapticFeedback.selectionClick();
-                    await fadeAnimController.reverse();
-                    widget.onTapAnchor!();
-                  }
-                },
+    return GestureDetector(
+      onTap: () async {
+        if(widget.onTapBackground != null) {
+          HapticFeedback.selectionClick();
+          await fadeAnimController.reverse();
+          widget.onTapBackground!.call();
+        }
+      },
+      child: Material(
+        color: Colors.transparent,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: FadeTransition(
+                opacity: backgroundAnimation,
+                child: widget.widgetFactory.create(
+                  currentPos: anchor.offset,
+                  anchorSize: anchor.size,
+                  bgColor: widget.bgColor,
+                  listenable: anchorAnimationController,
+                  onTap: () async {
+                    if (widget.onTapAnchor != null) {
+                      HapticFeedback.selectionClick();
+                      await fadeAnimController.reverse();
+                      widget.onTapAnchor!();
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-          Positioned.fromRect(
-            rect: anchor.rect,
-            child: LayoutBuilder(
-              builder: (context, constraints) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: PopAnimation(
-                          animation: fadeAnimController,
-                          opacityAnim: titleOpacityAnimation,
-                          sizeAnim: titleSizeAnimation,
-                          child: widget.title ?? Container(),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                        child: PopAnimation(
-                          animation: fadeAnimController,
-                          opacityAnim: descriptionOpacityAnimation,
-                          sizeAnim: descriptionSizeAnimation,
-                          child: widget.description ?? Container(),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          if (widget.leftBtnText != null &&
-                              widget.onRightTap != null)
-                            Expanded(
-                              child: PopAnimation(
-                                animation: fadeAnimController,
-                                opacityAnim: btnOpacityAnimation,
-                                sizeAnim: btnSizeAnimation,
-                                child: _buildEditableBordered(
-                                  widget.leftBtnText!,
-                                  widget.onRightTap!,
-                                  widget.leftBtnStyle,
+            Positioned.fromRect(
+              rect: anchor.rect,
+              child: LayoutBuilder(
+                builder: (context, constraints) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if(widget.title != null)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: PopAnimation(
+                              animation: fadeAnimController,
+                              opacityAnim: titleOpacityAnimation,
+                              sizeAnim: titleSizeAnimation,
+                              child: widget.title!,
+                            ),
+                          ),
+                        if(widget.description != null)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: PopAnimation(
+                              animation: fadeAnimController,
+                              opacityAnim: descriptionOpacityAnimation,
+                              sizeAnim: descriptionSizeAnimation,
+                              child: widget.description!,
+                            ),
+                          ),
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            if (widget.leftBtnText != null &&
+                                widget.onRightTap != null)
+                              Expanded(
+                                child: PopAnimation(
+                                  animation: fadeAnimController,
+                                  opacityAnim: btnOpacityAnimation,
+                                  sizeAnim: btnSizeAnimation,
+                                  child: _buildEditableBordered(
+                                    widget.leftBtnText!,
+                                    widget.onRightTap!,
+                                    widget.leftBtnStyle,
+                                  ),
                                 ),
                               ),
-                            ),
-                          const SizedBox(width: 16),
-                          if (widget.rightBtnText != null &&
-                              widget.onLeftBtnTap != null)
-                            Expanded(
-                              child: PopAnimation(
-                                animation: fadeAnimController,
-                                opacityAnim: btnOpacityAnimation,
-                                sizeAnim: btnSizeAnimation,
-                                child: _buildEditableBordered(
-                                  widget.rightBtnText!,
-                                  widget.onLeftBtnTap!,
-                                  widget.rightBtnStyle,
+                            const SizedBox(width: 16),
+                            if (widget.rightBtnText != null &&
+                                widget.onLeftBtnTap != null)
+                              Expanded(
+                                child: PopAnimation(
+                                  animation: fadeAnimController,
+                                  opacityAnim: btnOpacityAnimation,
+                                  sizeAnim: btnSizeAnimation,
+                                  child: _buildEditableBordered(
+                                    widget.rightBtnText!,
+                                    widget.onLeftBtnTap!,
+                                    widget.rightBtnStyle,
+                                  ),
                                 ),
                               ),
-                            ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

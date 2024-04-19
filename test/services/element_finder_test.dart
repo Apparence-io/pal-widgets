@@ -32,7 +32,7 @@ void main() {
             },
           )));
       await tester.pumpWidget(app);
-      ElementFinder finder = ElementFinder(_context);
+      ElementFinder finder = ElementFinder(buildContext: _context);
       var result = finder.searchChildElement("container")!;
       expect(result, isNotNull);
       expect(result.bounds!.size, equals(const Size(150, 50)));
@@ -50,7 +50,7 @@ void main() {
             },
           )));
       await tester.pumpWidget(app);
-      ElementFinder finder = ElementFinder(_context);
+      ElementFinder finder = ElementFinder(buildContext: _context);
       var elements = finder.scan();
       expect(elements, isNotNull);
       expect(elements.length, equals(6));
@@ -89,7 +89,7 @@ void main() {
             },
           )));
       await tester.pumpWidget(app);
-      ElementFinder finder = ElementFinder(_context);
+      ElementFinder finder = ElementFinder(buildContext: _context);
       var result = finder.searchChildElementByKey(containerKey)!;
       expect(result, isNotNull);
       expect(result.bounds!.size, equals(const Size(150, 50)));
