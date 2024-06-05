@@ -32,8 +32,6 @@ class AnchorHelperWrapper extends InheritedWidget {
 /// You are free to add a positiv button / negativ button or an onTap function
 /// on the anchor.
 class AnchoredHelper extends StatefulWidget {
-  /// The reference to the [Key] created by [HelperOrchestrator]
-  final String anchorKeyId;
 
   /// A [Text] widget to show as title
   final Text? title;
@@ -74,7 +72,6 @@ class AnchoredHelper extends StatefulWidget {
   final AnchorWidgetFactory widgetFactory;
 
   const AnchoredHelper({
-    required this.anchorKeyId,
     this.onLeftBtnTap,
     this.onRightTap,
     this.rightBtnText,
@@ -157,6 +154,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
 
   @override
   Widget build(BuildContext context) {
+    // print("anchor: ${anchor.offset} ${anchor.size}: ${anchor.rect}");
     return GestureDetector(
       onTap: () async {
         if(widget.onTapBackground != null) {
@@ -191,7 +189,10 @@ class _AnchoredHelperState extends State<AnchoredHelper>
               rect: anchor.rect,
               child: LayoutBuilder(
                 builder: (context, constraints) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0
+                  ),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight,

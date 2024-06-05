@@ -54,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
       );
 
   AnchoredHelper get helper => AnchoredHelper(
-        anchorKeyId: 'text1',
         title: const Text(
           'Title lorem pitume',
           textAlign: TextAlign.center,

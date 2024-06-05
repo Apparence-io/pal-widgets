@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:pal_widgets/helper_orchestrator.dart';
 
 const minWritableSpace = 100;
 
@@ -56,6 +57,29 @@ class ElementFinder {
       return ElementModel.empty();
     }
     return result;
+  }
+
+  Rect getSpaceFromAlignment(HelperAlignment align, ElementModel elementModel) {
+    var parentObject = context.findRenderObject()!;
+    var element = elementModel.element!;
+    var translation =
+        element.renderObject!.getTransformTo(parentObject).getTranslation();
+    var objectX = translation.x;
+    var objectEndX = objectX + element.size!.width;
+    var objectY = translation.y;
+    var objectEndY = objectY + element.size!.height;
+    var layerRect = parentObject.paintBounds;
+    switch (align) {
+      case HelperAlignment.top:
+        return Rect.fromLTWH(0, 0, layerRect.width, objectY);
+      case HelperAlignment.bottom:
+        return Rect.fromLTWH(0, objectEndY, layerRect.width, layerRect.height);
+      case HelperAlignment.left:
+        return Rect.fromLTWH(0, 0, objectX, layerRect.height);
+      case HelperAlignment.right:
+        return Rect.fromLTWH(objectEndX, 0, layerRect.width - objectEndX,
+            layerRect.height);
+    }
   }
 
   /// This functions search for the maximum rect available space

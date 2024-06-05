@@ -109,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   AnchoredHelper get helper => AnchoredHelper(
-        anchorKeyId: 'btn',
         title: const Text(
           'Push to increment',
           textAlign: TextAlign.center,
@@ -137,6 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // onRightTap: () => HelperOrchestrator.of(context).hideHelper(),
         // onLeftBtnTap: () => HelperOrchestrator.of(context).hideHelper(),
         onTapAnchor: () => HelperOrchestrator.of(context).hideHelper(),
-        widgetFactory: AnchoredRectHoleHelper.anchorFactory,
+        widgetFactory: AnchoredCircleHoleHelper.anchorFactory,
       );
 }

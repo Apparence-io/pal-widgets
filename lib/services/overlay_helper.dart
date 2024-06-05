@@ -11,7 +11,7 @@ class OverlayHelper {
       opaque: false,
       builder: widgetBuilder,
     );
-    final overlay = Overlay.of(context);
+    final overlay = Overlay.maybeOf(context);
     if (overlay != null) {
       overlay.insert(overlayEntry!);
     }

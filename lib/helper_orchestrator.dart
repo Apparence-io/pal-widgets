@@ -5,6 +5,9 @@ import 'anchored/anchor_model.dart';
 import 'anchored/anchored_helper_widget.dart';
 import 'services/overlay_helper.dart';
 
+/// used to align the helper to the top, bottom, left or right of the anchor
+enum HelperAlignment { top, bottom, left, right }
+
 class _HelperOrchestratorScope extends InheritedWidget {
   final HelperOrchestratorState _helperOrchestratorState;
 
@@ -99,7 +102,7 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   /// The key will be used to find the element position when requesting
   /// [showAnchoredHelper]
   Key generateKey(String key) {
-    // final uniqueKey = UniqueKey();
+    // final uniqueKey = GlobalKey(debugLabel: key);
     final uniqueKey = ValueKey(key);
     keys[key] = uniqueKey;
     return uniqueKey;
@@ -120,26 +123,31 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   /// ```dart
   /// HelperOrchestrator.of(context).generateKey('myKeyId')
   /// ```
-  Future showAnchoredHelper(String anchorKeyId, AnchoredHelper helper) async {
-    final anchor = await findAnchor(anchorKeyId);
-    if (anchor == null) {
-      debugPrint("anchor cannot be found. show anchored failed");
-      return;
+  Future showAnchoredHelper(String anchorKeyId, AnchoredHelper helper, {HelperAlignment? align,}) async {
+    try {
+      //final key = getAnchorKey(anchorKeyId) as ValueKey<String>;
+      final anchor = await findAnchor(anchorKeyId, align: align);
+      if (anchor == null) {
+        debugPrint("anchor cannot be found. show anchored failed");
+        return;
+      }
+      _overlayHelper.showHelper(
+        context,
+        (context) => AnchorHelperWrapper(
+          anchor: anchor,
+          child: helper,
+        ),
+      );
+    } catch (e) {
+      debugPrint("show anchored helper failed: $e");
     }
-    _overlayHelper.showHelper(
-      context,
-      (context) => AnchorHelperWrapper(
-        anchor: anchor,
-        child: helper,
-      ),
-    );
   }
 
   /// Returns an [Anchor] wich contains position, size and rect of the widget
   /// containing the key.
   ///
   /// this requires an [anchorKeyId] to search within our keys
-  Future<Anchor?> findAnchor(String anchorKeyId) async {
+  Future<Anchor?> findAnchor(String anchorKeyId, {HelperAlignment? align,}) async {
     final element = _elementFinder! //
         .searchChildElementByKey(getAnchorKey(anchorKeyId));
     if (element == null || element.bounds == null) {
@@ -148,11 +156,17 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     }
     final anchorSize = element.bounds!.size;
     final currentPos = element.offset!;
-    final writeArea = _elementFinder!.getLargestAvailableSpace(element);
+    if(align != null) {
+      return Anchor(
+        size: anchorSize,
+        offset: currentPos,
+        rect: _elementFinder!.getSpaceFromAlignment(align, element),
+      );
+    }
     return Anchor(
       size: anchorSize,
       offset: currentPos,
-      rect: writeArea,
+      rect: _elementFinder!.getLargestAvailableSpace(element),
     );
   }
 
