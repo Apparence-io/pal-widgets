@@ -31,8 +31,8 @@ class HelperOrchestrator extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
 
   const HelperOrchestrator({
-    Key? key, 
-    required this.child, 
+    Key? key,
+    required this.child,
     this.navigatorKey,
   }) : super(key: key);
 
@@ -89,7 +89,7 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(widget.navigatorKey != null) {
+    if (widget.navigatorKey != null) {
       _elementFinder = ElementFinder(navigatorKey: widget.navigatorKey);
     } else {
       _elementFinder = ElementFinder(buildContext: context);
@@ -123,7 +123,11 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   /// ```dart
   /// HelperOrchestrator.of(context).generateKey('myKeyId')
   /// ```
-  Future showAnchoredHelper(String anchorKeyId, AnchoredHelper helper, {HelperAlignment? align,}) async {
+  Future showAnchoredHelper(
+    String anchorKeyId,
+    AnchoredHelper helper, {
+    HelperAlignment? align,
+  }) async {
     try {
       //final key = getAnchorKey(anchorKeyId) as ValueKey<String>;
       final anchor = await findAnchor(anchorKeyId, align: align);
@@ -147,7 +151,10 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   /// containing the key.
   ///
   /// this requires an [anchorKeyId] to search within our keys
-  Future<Anchor?> findAnchor(String anchorKeyId, {HelperAlignment? align,}) async {
+  Future<Anchor?> findAnchor(
+    String anchorKeyId, {
+    HelperAlignment? align,
+  }) async {
     final element = _elementFinder! //
         .searchChildElementByKey(getAnchorKey(anchorKeyId));
     if (element == null || element.bounds == null) {
@@ -156,7 +163,7 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     }
     final anchorSize = element.bounds!.size;
     final currentPos = element.offset!;
-    if(align != null) {
+    if (align != null) {
       return Anchor(
         size: anchorSize,
         offset: currentPos,

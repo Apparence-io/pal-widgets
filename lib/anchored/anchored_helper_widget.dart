@@ -32,7 +32,6 @@ class AnchorHelperWrapper extends InheritedWidget {
 /// You are free to add a positiv button / negativ button or an onTap function
 /// on the anchor.
 class AnchoredHelper extends StatefulWidget {
-
   /// A [Text] widget to show as title
   final Text? title;
 
@@ -157,7 +156,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
     // print("anchor: ${anchor.offset} ${anchor.size}: ${anchor.rect}");
     return GestureDetector(
       onTap: () async {
-        if(widget.onTapBackground != null) {
+        if (widget.onTapBackground != null) {
           HapticFeedback.selectionClick();
           await fadeAnimController.reverse();
           widget.onTapBackground!.call();
@@ -190,9 +189,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
               child: LayoutBuilder(
                 builder: (context, constraints) => Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0
-                  ),
+                      horizontal: 16.0, vertical: 8.0),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minHeight: constraints.maxHeight,
@@ -202,7 +199,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if(widget.title != null)
+                        if (widget.title != null)
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             child: PopAnimation(
@@ -212,7 +209,7 @@ class _AnchoredHelperState extends State<AnchoredHelper>
                               child: widget.title!,
                             ),
                           ),
-                        if(widget.description != null)
+                        if (widget.description != null)
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                             child: PopAnimation(

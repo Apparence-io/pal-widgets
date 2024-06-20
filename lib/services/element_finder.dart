@@ -41,8 +41,8 @@ class ElementFinder {
   // this method scan all child recursively to find a widget having a key == searchedKey
   ElementModel? searchChildElement(String? key) {
     ElementModel? result;
-    context.visitChildElements((element) => result =
-        _searchChildElement(context.findRenderObject(), element, key));
+    context.visitChildElements((element) =>
+        result = _searchChildElement(context.findRenderObject(), element, key));
     if (result == null) {
       return ElementModel.empty();
     }
@@ -77,8 +77,8 @@ class ElementFinder {
       case HelperAlignment.left:
         return Rect.fromLTWH(0, 0, objectX, layerRect.height);
       case HelperAlignment.right:
-        return Rect.fromLTWH(objectEndX, 0, layerRect.width - objectEndX,
-            layerRect.height);
+        return Rect.fromLTWH(
+            objectEndX, 0, layerRect.width - objectEndX, layerRect.height);
     }
   }
 

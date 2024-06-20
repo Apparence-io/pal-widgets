@@ -18,7 +18,7 @@ A set of amazing onboarding widgets for your flutter applications.
 ## Install package
 add in your pubspec.yaml dependencies
 
-```pal-widgets: 0.2.0```
+```pal-widgets: 0.3.0```
 
 ----
 
@@ -56,7 +56,6 @@ Text(
 You can now show an anchored helper using 
 ```dart
 final helper = AnchoredHelper(
-    anchorKeyId: 'text1',
     title: const Text('Title lorem pitume'),
     description: const Text('Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum'),,
     bgColor: Colors.blue,
@@ -78,7 +77,6 @@ HelperOrchestrator.of(context).showAnchoredHelper('text1', helper);
 
 | Property           |      description                             |  Required   |
 |--------------------|----------------------------------------------|-------------|
-| anchorKeyId        | The reference to the [Key] created by [HelperOrchestrator] |:white_check_mark:|
 | title        | A Text widget to show as title | |
 | description        | A Text widget to show as description | |
 | bgColor        | A Color as Overlayed background | :white_check_mark: |
@@ -97,4 +95,4 @@ There is two Hole Anchor widget factories :
 - ```AnchoredRectHoleHelper.anchorFactory``` : creates a rectangle hole on strict widget bounds
 
 ## Any question? 
-Contact us on [our twitter](https://twitter.com/PalFlutter) or email gautier[@@]pal-plugin.tech
+Contact us on [our twitter](https://twitter.com/PalFlutter) 
