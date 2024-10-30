@@ -21,6 +21,8 @@ class ElementFinder {
     return navigatorKey!.currentContext!;
   }
 
+  Size get screenSize => MediaQuery.of(context).size;
+
   // this method scan all child recursively to get all widget bounds we could select for an helper
   Map<String, ElementModel> scan({Key? omitChildsOf, bool debugMode = false}) {
     Map<String, ElementModel> results = <String, ElementModel>{};
@@ -49,10 +51,17 @@ class ElementFinder {
     return result;
   }
 
-  ElementModel? searchChildElementByKey(Key key) {
+  ElementModel? searchChildElementByKey(
+    Key key, {
+    required bool isInModal,
+  }) {
     ElementModel? result;
-    context.visitChildElements((element) => result =
-        _searchChildElementByKey(context.findRenderObject(), element, key));
+    context.visitChildElements((element) => result = _searchChildElementByKey(
+          context.findRenderObject(),
+          element,
+          key,
+          isInModal: isInModal,
+        ));
     if (result == null) {
       return ElementModel.empty();
     }
@@ -62,11 +71,10 @@ class ElementFinder {
   Rect getSpaceFromAlignment(HelperAlignment align, ElementModel elementModel) {
     var parentObject = context.findRenderObject()!;
     var element = elementModel.element!;
-    var translation =
-        element.renderObject!.getTransformTo(parentObject).getTranslation();
-    var objectX = translation.x;
+    // var translation = element.renderObject!.getTransformTo(parentObject).getTranslation();
+    var objectX = elementModel.offset!.dx;
     var objectEndX = objectX + element.size!.width;
-    var objectY = translation.y;
+    var objectY = elementModel.offset!.dy;
     var objectEndY = objectY + element.size!.height;
     var layerRect = parentObject.paintBounds;
     switch (align) {
@@ -133,7 +141,7 @@ class ElementFinder {
         element.widget.key.toString().contains(key!)) {
       try {
         // if render element has bounds lets take it
-        var res = _createElementModel(parentObject, element);
+        var res = _createElementModel(parentObject, element, false);
         return res;
       } catch (_) {}
     }
@@ -146,18 +154,27 @@ class ElementFinder {
   }
 
   ElementModel? _searchChildElementByKey(
-      RenderObject? parentObject, Element element, Key key,
-      {int n = 0}) {
+    RenderObject? parentObject,
+    Element element,
+    Key key, {
+    int n = 0,
+    required bool isInModal,
+  }) {
     if (element.widget.key != null && element.widget.key == key) {
       try {
         // if render element has bounds lets take it
-        var res = _createElementModel(parentObject, element);
-        return res;
+        return _createElementModel(parentObject, element, isInModal);
       } catch (_) {}
     }
     ElementModel? result;
     element.visitChildElements((visitor) {
-      var res = _searchChildElementByKey(parentObject, visitor, key, n: n + 1);
+      var res = _searchChildElementByKey(
+        parentObject,
+        visitor,
+        key,
+        n: n + 1,
+        isInModal: isInModal,
+      );
       if (res != null) result = res;
     });
     return result;
@@ -189,7 +206,7 @@ class ElementFinder {
         debugPrint("  added ${element.widget.key.toString()} : $n");
       }
       try {
-        var model = _createElementModel(parentObject, element);
+        var model = _createElementModel(parentObject, element, false);
         if (results.values.firstWhereOrNull((element) =>
                 element.bounds == model.bounds &&
                 element.offset == model.offset) ==
@@ -217,15 +234,40 @@ class ElementFinder {
   }
 
   ElementModel _createElementModel(
-      RenderObject? parentObject, Element element) {
-    var renderObject = element.findRenderObject()!;
-    var bounds = renderObject.paintBounds;
-    var translation =
-        renderObject.getTransformTo(parentObject).getTranslation();
-    var offset = Offset(translation.x, translation.y);
-    return ElementModel(element.widget.key.toString(), bounds, offset,
+    RenderObject? parentObject,
+    Element element,
+    bool isInModal,
+  ) {
+    try {
+      final mScreenSize = screenSize;
+      var renderObject = element.findRenderObject()!;
+
+      var bounds = renderObject.paintBounds;
+      var translation = renderObject //
+          .getTransformTo(parentObject)
+          .getTranslation();
+      // final parentBounds = parentObject!.paintBounds;
+      if (isInModal) {
+        final parentRenderObject = renderObject.parent!;
+        final parentBounds = parentRenderObject.paintBounds;
+        if (parentBounds.height < mScreenSize.height) {
+          translation.y +=
+              mScreenSize.height - parentBounds.height - bounds.height / 2;
+        }
+      }
+      var offset = Offset(translation.x, translation.y);
+
+      return ElementModel(
+        element.widget.key.toString(),
+        bounds,
+        offset,
         element.widget.runtimeType,
-        element: element);
+        element: element,
+      );
+    } catch (e, s) {
+      debugPrint("Error while creating element model: $e $s");
+      rethrow;
+    }
   }
 }
 

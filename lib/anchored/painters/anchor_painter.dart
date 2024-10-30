@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 abstract class AnchorWidgetFactory {
   const AnchorWidgetFactory();
 
-  @factory
+  // @factory
   Widget create({
     final Offset? currentPos,
     final Size? anchorSize,

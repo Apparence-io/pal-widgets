@@ -127,10 +127,12 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
     String anchorKeyId,
     AnchoredHelper helper, {
     HelperAlignment? align,
+    bool isInModal = false,
   }) async {
     try {
       //final key = getAnchorKey(anchorKeyId) as ValueKey<String>;
-      final anchor = await findAnchor(anchorKeyId, align: align);
+      final anchor =
+          await findAnchor(anchorKeyId, align: align, isInModal: isInModal);
       if (anchor == null) {
         debugPrint("anchor cannot be found. show anchored failed");
         return;
@@ -142,8 +144,8 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
           child: helper,
         ),
       );
-    } catch (e) {
-      debugPrint("show anchored helper failed: $e");
+    } catch (e, s) {
+      debugPrint("show anchored helper failed: $e $s");
     }
   }
 
@@ -154,9 +156,11 @@ class HelperOrchestratorState extends State<HelperOrchestrator> {
   Future<Anchor?> findAnchor(
     String anchorKeyId, {
     HelperAlignment? align,
+    bool isInModal = false,
   }) async {
     final element = _elementFinder! //
-        .searchChildElementByKey(getAnchorKey(anchorKeyId));
+        .searchChildElementByKey(getAnchorKey(anchorKeyId),
+            isInModal: isInModal);
     if (element == null || element.bounds == null) {
       debugPrint("anchor not found");
       return null;

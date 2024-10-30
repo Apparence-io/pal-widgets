@@ -90,7 +90,8 @@ void main() {
           )));
       await tester.pumpWidget(app);
       ElementFinder finder = ElementFinder(buildContext: _context);
-      var result = finder.searchChildElementByKey(containerKey)!;
+      var result =
+          finder.searchChildElementByKey(containerKey, isInModal: false)!;
       expect(result, isNotNull);
       expect(result.bounds!.size, equals(const Size(150, 50)));
     });
